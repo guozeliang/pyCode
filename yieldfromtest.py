@@ -47,4 +47,24 @@ while j < 3:
 
 '''
 
+def gen():
+    while True:
+        try:
+            yield 'normal value'
+            yield 'normal value 2'
+            print('here')
+        except ValueError:
+            print('we got valueError here')
+        except TypeError:
+            print('we got valueError here')
+            break
+
+g = gen()
+print(next(g))
+print(g.throw(ValueError))
+print(next(g))
+print(g.throw(TypeError))
+
+
+
 
