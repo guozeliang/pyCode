@@ -24,10 +24,19 @@ def encrypy_decrator(*dargs, **dkargs):
          return _wrapper
      return wrapper
 
+@encrypy_decrator('http://app.gsfybjy.com/phpatient/app/appservice?querystr=')
+def foo(x):
+    # 开始请求
+    response = requests.get(x)
+    try:
+        if response.status_code == 200:
+            print(response.text)
+            print('success')
+    except Exception as e:
+        print(e)
+        print(response.text)
+    print('***')
+
 if __name__ == '__main__':
     # @encrypyDec
-    @encrypy_decrator('http://1.85.3.154:13003/phpatient/app/appservice?querystr=')
-    def foo(x):
-        print('***')
-
-    foo('111111111111111111111111111111')
+    foo('/app/phpatientarticle/appuseagreement?aArticleCategoryId=47DE670DABEA41838356283C6E212435')

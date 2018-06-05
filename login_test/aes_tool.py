@@ -41,12 +41,12 @@ class aes_tool(object):
 # aClientType=0\x00\x00\x00\x00\x00\x00
 if __name__ == '__main__':
     '''解密'''
-    deStr = aes_tool.decrypt('G9A5tOj4O635wdvoY31lMh+cwaLz1wYBZkROUnYLQ9SECRyvFBmO2kk15pcYk9CvAv2DylCcM306eV8/Hmh2nTGlmkmvCXQ8+nT2ahel4BUzfNOhVq/W7IQhNlNmAq6tVK/nToTsdysRTIRBReTM+zI8sqQiJQAqgJoAt65ut6w=')
+    deStr = aes_tool.decrypt('NylQAfA1WQCPbm2gFvNR9GNTFoMxDt4IGMkQbr1V8nm0Q1trdOlffEFBOHM5p0VZyzCOMTAATaqshtYaftKbCbbvvuAEtYpuBwMkaO73xn6WFMvL5v4ocC6B0JzP9Ka3M1cP6MWOSE7obIlFtDlDi7Xd+flVsLYLJB4I3NiFjfg=')
     print(deStr)
     '''加密'''
     enStr = aes_tool.encrypy('/app/phpatientmain/login?aUserName=17737166928&aPassword=E10ADC3949BA59ABBE56E057F20F883E&aVersionNo=1.2.625&aClientType=0')
     print(enStr)
 
-
+# app/phpatientarticle/appuseagreement?aArticleCategoryId=47DE670DABEA41838356283C6E212435
 
 

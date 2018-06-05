@@ -2,7 +2,8 @@ import requests
 import json
 from pdbc_conn import oracleCon
 import gevent
-from gevent import monkey; monkey.patch_all()
+from gevent import monkey
+monkey.patch_all()
 from AES_DECR import encrypyDec
 import random
 
@@ -76,5 +77,7 @@ if __name__ == '__main__':
         # print('%s--%s--%s--%s'% (x[0],x[1],version,clientType))
         list.append(gevent.spawn(reqServerByUserName,x[0],x[1],version,clientType))
     gevent.joinall(list)
+
+
 
 
