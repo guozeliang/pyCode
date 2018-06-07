@@ -3,24 +3,26 @@ from logger import Logger
 import subprocess
 import psutil
 import os
+from base_util import utilBase
 
 logger = Logger(logger="nginx").getlog()
 
-class nginxutil(object):
+class nginxutil(utilBase):
 
     def __init__(self,serviceName,nginxPath):
+        utilBase.__init__(self)
         self.base_path = nginxPath
         self.ng_name = serviceName
 
     # 获取pid
-    @classmethod
-    def processinfo(cls, processName):
-        try:
-            service = psutil.win_service_get(processName)
-            return service.as_dict()['pid']
-        except psutil.NoSuchProcess as e:
-            logger.info('没有找到服务名为：%s 的进程PID' % processName)
-            return None
+    # @classmethod
+    # def processinfo(cls, processName):
+    #     try:
+    #         service = psutil.win_service_get(processName)
+    #         return service.as_dict()['pid']
+    #     except psutil.NoSuchProcess as e:
+    #         logger.info('没有找到服务名为：%s 的进程PID' % processName)
+    #         return None
 
     # 清理nginx日志
     def clearLog(self):

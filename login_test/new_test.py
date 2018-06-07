@@ -14,7 +14,7 @@ start = time.time()
 url_list = []
 endUrl = '/app/phpatientarticle/appuseagreement?aArticleCategoryId=47DE670DABEA41838356283C6E212435'
 
-for i in range(1000):
+for i in range(1):
     enStr = 'http://app.gsfybjy.com/phpatient/app/appservice?querystr=' + aes_tool.encrypy(endUrl).decode('utf-8')
     url_list.append(gevent.spawn(f,enStr))
 print(enStr)
