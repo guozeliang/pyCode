@@ -27,7 +27,6 @@ def getConfig():
 if __name__ == '__main__':
     # 获取配置信息
     tomcatDict, testUrl, nginxName, nginxPath,tomcatUrlDict = getConfig()
-    # if nginxPath==||
     #清Nginx日志
     nginxUtil = nginxutil(nginxName,nginxPath)
     nginxUtil.clearLog()
