@@ -25,7 +25,7 @@ class nginxutil(utilBase):
             else:
                 logger.info('服务名：%s 日志清理失败' % self.ng_name)
         except Exception as e:
-            print(e)
+            logger.error('服务名：%s 日志清理异常' % self.ng_name)
         finally:
             # 重启nginx
             self.startNginx()

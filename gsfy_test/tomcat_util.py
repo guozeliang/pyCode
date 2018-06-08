@@ -14,12 +14,12 @@ class tomcatutil(utilBase):
         try:
             isSucc = self.startService(serviceName)
             if isSucc == True:
-                myLogger.info('服务名：%s 启动成功' % serviceName)
+                myLogger.info('服务名：%s 服务启动中.....' % serviceName)
                 return True
-            myLogger.info('服务名：%s 启动失败' % serviceName)
+            myLogger.info('服务名：%s 服务启动失败111' % serviceName)
             return False
         except Exception as e:
-            myLogger.info('服务名：%s 启动失败' % serviceName)
+            myLogger.info('服务名：%s 服务启动失败 %s' % (serviceName,e))
             return False
 
     # 关闭tomcat
@@ -36,7 +36,7 @@ class tomcatutil(utilBase):
             myLogger.info('服务名：%s 关闭失败' % serviceName)
             return False
         except Exception as e:
-            myLogger.info('服务名：%s 关闭失败' % serviceName)
+            myLogger.info('服务名：%s 关闭失败 %s' % (serviceName,e))
             return False
 
     # 清空tomcat所有日志
@@ -56,18 +56,19 @@ class tomcatutil(utilBase):
     #测试接口调用
     # @encrypy_decrator('http://app.gsfybjy.com/phpatient/app/appservice?querystr=')
     def testUrl(self,url):
-        print(url)
         try:
-            request = requests.get(url,timeout=2)
+            request = requests.get(url,timeout=180)
             print(request.status_code)
             if request.status_code == 200:
-                myLogger.info('接口调用成功：%s' %url)
+                myLogger.info('测试接口调用成功：%s' %url)
                 return True
-            else:
-                return False
+            myLogger.info('测试接口调用失败：%s' % request.content)
+            return False
         except (requests.exceptions.Timeout, requests.exceptions.ConnectionError) as e:
-            myLogger.error('接口调用超时或连接异常--%s' % e)
+            myLogger.error(url)
+            myLogger.error('测试接口调用超时或连接异常--%s' % e)
             return False
         except Exception as e:
-            myLogger.error('接口调用异常--%s' % e)
+            myLogger.error(url)
+            myLogger.error('测试接口调用异常--%s' % e)
             return False
