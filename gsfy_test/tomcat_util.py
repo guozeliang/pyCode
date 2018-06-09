@@ -2,8 +2,10 @@ import subprocess
 from logger import Logger
 import psutil
 import requests
-from AES_DECR import encrypy_decrator
+from AES_DECR import encrypyDecByTwo
 from base_util import utilBase
+import time
+from aes_tool import aes_tool
 
 myLogger = Logger(logger="tomcat").getlog()
 
@@ -16,10 +18,10 @@ class tomcatutil(utilBase):
             if isSucc == True:
                 myLogger.info('服务名：%s 服务启动中.....' % serviceName)
                 return True
-            myLogger.info('服务名：%s 服务启动失败111' % serviceName)
+            myLogger.info('服务名：%s 服务启动失败' % serviceName)
             return False
         except Exception as e:
-            myLogger.info('服务名：%s 服务启动失败 %s' % (serviceName,e))
+            myLogger.info('服务名：%s 服务启动异常 %s' % (serviceName,e))
             return False
 
     # 关闭tomcat
@@ -32,6 +34,7 @@ class tomcatutil(utilBase):
             isSucc = self.taskkillService(serviceName)
             if isSucc == True:
                 myLogger.info('服务名：%s 关闭成功' % serviceName)
+                time.sleep(10)
                 return True
             myLogger.info('服务名：%s 关闭失败' % serviceName)
             return False
@@ -45,8 +48,9 @@ class tomcatutil(utilBase):
             :param logs_path:
             :return:
         '''
+        # cmd_all = "rd /s/q logs "
+        cmd_all = "del /f/s/q *.log "
         try:
-            cmd_all = "rd /s/q logs "
             retcode = subprocess.call(cmd_all, shell=True, cwd=logs_path)
             if retcode == 0:
                 myLogger.info('服务名：%s 清理日志成功' % serviceName)
@@ -54,11 +58,12 @@ class tomcatutil(utilBase):
             myLogger.info("服务名：%s 清理日志失败 %s" % (serviceName,e))
 
     #测试接口调用
-    # @encrypy_decrator('http://app.gsfybjy.com/phpatient/app/appservice?querystr=')
-    def testUrl(self,url):
+    # @encrypyDecByTwo
+    def testUrl(self,fisUrl,endUrl):
+        url = fisUrl + endUrl
         try:
             request = requests.get(url,timeout=180)
-            print(request.status_code)
+            myLogger.info(request.status_code)
             if request.status_code == 200:
                 myLogger.info('测试接口调用成功：%s' %url)
                 return True

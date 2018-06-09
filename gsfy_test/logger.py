@@ -17,6 +17,8 @@ class Logger(object):
         rq = time.strftime('%Y-%m-%d', time.localtime())
         log_path = os.path.dirname(os.getcwd()) + '\\logs\\'
         log_name = log_path + rq + '.log'
+        if not os.path.exists(log_name):
+            os.system(r'touch %s' % log_name)
         fh = logging.FileHandler(log_name)
         fh.setLevel(logging.INFO)
         #再创建一个handler，用于输出到控制台

@@ -24,7 +24,8 @@ def getConfig():
     tomcatUrlDict = dict(config.items('tomcats_url_config'))
     startTimeout = config.get('timout_config', 'tomcattimeout')
     titalTimeout = config.get('timout_config', 'titaltimeout')
-    return tomcatDict,testUrl,nginxName,nginxPath,tomcatUrlDict,startTimeout,titalTimeout
+    testurl = config.get('testurl_config', 'testurl')
+    return tomcatDict,testUrl,nginxName,nginxPath,tomcatUrlDict,startTimeout,titalTimeout,testurl
 
 def resTomcat(outTime):
     while True:
@@ -34,6 +35,8 @@ def resTomcat(outTime):
             isStopSucc = tomcatUtil.stopTomcat(serviceName)
             # 启动tomcat
             isStartSucc = tomcatUtil.startTomcat(serviceName)
+            if isStartSucc == False:
+                continue
             # 检查tomcat启动是否成功
             isSucc = tomcatUtil.testUrl(tomcatUrlDict[serviceName])
             if isSucc == True:
@@ -43,7 +46,7 @@ def resTomcat(outTime):
 
 if __name__ == '__main__':
     # 获取配置信息
-    tomcatDict, testUrl, nginxName, nginxPath,tomcatUrlDict,startTimeout,titalTimeout = getConfig()
+    tomcatDict, testUrl, nginxName, nginxPath,tomcatUrlDict,startTimeout,titalTimeout,testurl = getConfig()
     #清Nginx日志
     nginxUtil = nginxutil(nginxName,nginxPath)
     nginxUtil.clearLog()
@@ -61,13 +64,13 @@ if __name__ == '__main__':
             break
         # 清理tomcat日志
         tomcatUtil.clearLog(serviceLog_path,serviceName)
-        time.sleep(10)
         # 启动tomcat
         isStartSucc = tomcatUtil.startTomcat(serviceName)
         if isStartSucc == False:
             break
         # 检查tomcat启动是否成功
-        isSucc = tomcatUtil.testUrl(tomcatUrlDict[serviceName])
+        isSucc = tomcatUtil.testUrl(tomcatUrlDict[serviceName],testurl)
+        # isSucc = tomcatUtil.testGsfuUrl(tomcatUrlDict[serviceName],testurl)
         # 启动失败
         if isSucc == False:
             outTime = (datetime.datetime.now()+datetime.timedelta(minutes=float(startTimeout))).timestamp()

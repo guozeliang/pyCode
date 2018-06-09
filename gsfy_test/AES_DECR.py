@@ -9,10 +9,22 @@ def encrypyDec(func):
         return func(*args,**kwargs)
     return wrapper
 
+def encrypyDecByTwo(func):
+    ''' 加密装饰器 '''
+    def wrapper(*args,**kwargs):
+        print(args)
+        enStr = aes_tool.encrypy(args[2]).decode('utf-8')
+        args = (args[0],args[1],enStr,)
+        return func(*args,**kwargs)
+    return wrapper
+
 def encrypy_decrator(*dargs, **dkargs):
      def wrapper(func):
          def _wrapper(*args, **kargs):
-             enStr = dargs[0] + aes_tool.encrypy(args[0]).decode('utf-8')
+             # print(dargs[0])
+             # print(args[1])
+             enStr = dargs[0] + aes_tool.encrypy(args[1]).decode('utf-8')
+             # print(enStr)
              args = (enStr,)
              return func(*args, **kargs)
          return _wrapper

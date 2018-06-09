@@ -1,6 +1,7 @@
 import psutil
 import subprocess
 from logger import Logger
+
 logger = Logger(logger="utilBase").getlog()
 
 class utilBase(object):
