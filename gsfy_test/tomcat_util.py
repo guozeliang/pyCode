@@ -57,12 +57,21 @@ class tomcatutil(utilBase):
         '''
         # cmd_all = "rd /s/q logs "
         cmd_all = "del /f/s/q *.log "
-        try:
-            retcode = subprocess.call(cmd_all, shell=True, cwd=logs_path)
-            if retcode == 0:
-                self.myLogger.info('服务名：%s 清理日志成功' % serviceName)
-        except Exception as e:
-            self.myLogger.info("服务名：%s 清理日志失败 %s" % (serviceName,e))
+        # retcode = subprocess.call(cmd_all, shell=True, cwd=logs_path)
+        with subprocess.Popen(cmd_all, stdout=subprocess.PIPE,shell=True, cwd=logs_path) as p:
+            try:
+                retcode = p.wait(timeout=None)
+                stdout, stderr = p.communicate()
+                if stdout.strip() != '':
+                    self.myLogger.info(str(stdout, encoding='gbk'))
+                if stderr is not None:
+                    self.myLogger.info(str(stderr, encoding='gbk'))
+                if retcode == 0:
+                    self.myLogger.info('服务名：%s 清理日志成功' % serviceName)
+            except Exception as e:
+                self.myLogger.info("服务名：%s 清理日志失败 %s" % (serviceName, e))
+                p.kill()
+                p.wait()
 
     #测试接口调用
     # @encrypyDecByTwo

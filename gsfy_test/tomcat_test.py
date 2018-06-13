@@ -11,7 +11,7 @@ from tomcat_util import tomcatutil
 #获取配置信息
 def getConfig():
     config = ConfigParser()
-    config.read("config.conf")
+    config.read("config2.conf")
     tomcatDict = dict(config.items('tomcats_config'))
     testUrl = config.get('testurl_config', 'testurl')
     nginxName = config.get('nginx_config', 'nginxserivcename')

@@ -17,17 +17,24 @@ class nginxutil(utilBase):
         if self.killNginx() == False:
             return
         cmd_all = "del /f/s/q *.log "
-        try:
-            retcode = subprocess.call(cmd_all, shell=True, cwd=self.base_path+ '\\logs\\')
-            if retcode == 0:
-                self.logger.info('服务名：%s 日志清理完成' % self.ng_name)
-            else:
-                self.logger.info('服务名：%s 日志清理失败' % self.ng_name)
-        except Exception as e:
-            self.logger.error('服务名：%s 日志清理异常' % self.ng_name)
-        finally:
-            # 重启nginx
-            self.startNginx()
+        # retcode = subprocess.call(cmd_all, shell=True, cwd=self.base_path+ '\\logs\\')
+        with subprocess.Popen(cmd_all, stdout=subprocess.PIPE, shell=True, cwd=self.base_path+ '\\logs\\') as p:
+            try:
+                retcode = p.wait(timeout=None)
+                stdout, stderr = p.communicate()
+                if stdout.strip() != '':
+                    self.logger.info(str(stdout, encoding='gbk'))
+                if stderr is not None:
+                    self.logger.info(str(stderr, encoding='gbk'))
+                if retcode == 0:
+                    self.logger.info('服务名：%s 日志清理完成' % self.ng_name)
+            except Exception as e:
+                self.logger.error('服务名：%s 日志清理异常' % self.ng_name)
+                p.kill()
+                p.wait()
+            finally:
+                # 重启nginx
+                self.startNginx()
 
     # 用杀进程的方式停止服务
     def killNginx(self):
@@ -57,13 +64,22 @@ class nginxutil(utilBase):
 
     # 关闭nginx
     def stopNginx(self):
-        try:
-            retcode = subprocess.call("nginx -s stop", shell=True, cwd=self.base_path)
+        # retcode = subprocess.call("nginx -s stop", shell=True, cwd=self.base_path)
+        with subprocess.Popen("nginx -s stop", stdout=subprocess.PIPE, shell=True, cwd=self.base_path) as p:
+            try:
+                retcode = p.wait(timeout=None)
+                stdout, stderr = p.communicate()
+            except Exception as e:
+                self.logger.info('服务名：%s 关闭失败' % self.ng_name)
+                p.kill()
+                p.wait()
+                return False
+            if stdout.strip() != '':
+                self.logger.info(str(stdout, encoding='gbk'))
+            if stderr is not None:
+                self.logger.info(str(stderr, encoding='gbk'))
             if retcode == 0:
                 self.logger.info('服务名：%s 关闭成功' % self.ng_name)
                 return True
-            self.logger.info('服务名：%s 关闭失败' % self.ng_name)
-            return False
-        except Exception as e:
             self.logger.info('服务名：%s 关闭失败' % self.ng_name)
             return False
