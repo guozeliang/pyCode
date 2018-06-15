@@ -21,14 +21,16 @@ class utilBase(object):
     # 用服务名方式启动
     def startService(self,serviceName):
         call_cmd = "net start " + serviceName
-        with subprocess.Popen(call_cmd,stdout=subprocess.PIPE) as p:
+        with subprocess.Popen(call_cmd,stdout=subprocess.PIPE,stderr=subprocess.PIPE) as p:
             try:
                 retcode = p.wait(timeout=None)
                 stdout,stderr = p.communicate()
-                if stdout.strip() != '':
-                    logger.info(str(stdout, encoding='gbk'))
-                if stderr is not None:
-                    logger.info(str(stderr, encoding='gbk'))
+                uStdout = str(stdout, encoding='gbk').strip()
+                uStderr = str(stderr, encoding='gbk').strip()
+                if uStdout != '':
+                    logger.info('启动服务:\n%s'% uStdout)
+                if uStderr is not None and uStderr != '':
+                    logger.info('启动服务:\n%s'% uStderr)
             except:
                 p.kill()
                 p.wait()
@@ -43,14 +45,16 @@ class utilBase(object):
         pid = self.processinfo(serviceName)
         if pid == None:
             return True
-        with subprocess.Popen(call_cmd,stdout=subprocess.PIPE) as p:
+        with subprocess.Popen(call_cmd,stdout=subprocess.PIPE,stderr=subprocess.PIPE) as p:
             try:
                 retcode = p.wait(timeout=None)
                 stdout,stderr = p.communicate()
-                if stdout.strip() != '':
-                    logger.info(str(stdout, encoding='gbk'))
-                if stderr is not None:
-                    logger.info(str(stderr, encoding='gbk'))
+                uStdout = str(stdout, encoding='gbk').strip()
+                uStderr = str(stderr, encoding='gbk').strip()
+                if uStdout != '':
+                    logger.info('关闭服务:\n%s'% uStdout)
+                if uStderr is not None and uStderr != '':
+                    logger.info('关闭服务:\n%s'% uStderr)
             except:
                 p.kill()
                 p.wait()
@@ -66,14 +70,16 @@ class utilBase(object):
             return True
         call_cmd = "taskkill /PID {} /F /T".format(pid)
         # 用subprocess杀进程
-        with subprocess.Popen(call_cmd,stdout=subprocess.PIPE) as p:
+        with subprocess.Popen(call_cmd,stdout=subprocess.PIPE,stderr=subprocess.PIPE) as p:
             try:
                 retcode = p.wait(timeout=None)
                 stdout,stderr = p.communicate()
-                if stdout.strip() != '':
-                    logger.info(str(stdout, encoding='gbk'))
-                if stderr is not None:
-                    logger.info(str(stderr, encoding='gbk'))
+                uStdout = str(stdout, encoding='gbk').strip()
+                uStderr = str(stderr, encoding='gbk').strip()
+                if uStdout != '':
+                    logger.info('关闭服务:\n%s'% uStdout)
+                if uStderr is not None and uStderr != '':
+                    logger.info('关闭服务:\n%s'% uStderr)
             except:
                 p.kill()
                 p.wait()

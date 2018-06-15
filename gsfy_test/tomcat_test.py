@@ -8,10 +8,12 @@ from logger import Logger
 from nginx_util import nginxutil
 from tomcat_util import tomcatutil
 
+myLogger = Logger(logger="main").getlog()
+
 #获取配置信息
 def getConfig():
     config = ConfigParser()
-    config.read("config2.conf")
+    config.read("config.conf")
     tomcatDict = dict(config.items('tomcats_config'))
     testUrl = config.get('testurl_config', 'testurl')
     nginxName = config.get('nginx_config', 'nginxserivcename')
@@ -23,11 +25,9 @@ def getConfig():
 
 def restartTomcats(tomcatDict, testUrl,tomcatUrlDict,tomcatTimeout,titalTimeout):
     # 重启tomcat
-    tomcatUtil = tomcatutil()
     titalOutTime = (datetime.datetime.now() + datetime.timedelta(minutes=float(titalTimeout))).timestamp()
     for serviceName, serviceLog_path in tomcatDict.items():
         tomcatOutTime = (datetime.datetime.now() + datetime.timedelta(minutes=float(tomcatTimeout))).timestamp()
-        myLogger.info('\n\n')
         myLogger.info('-----------------------------%s开始-------------------------------'%serviceName)
         while True:
             # 单个tomcat超时时间
@@ -70,11 +70,18 @@ if __name__ == '__main__':
     nginxUtil = nginxutil(nginxName,nginxPath)
     nginxUtil.clearLog()
     # 重启tomcat
+    tomcatUtil = tomcatutil()
+    currentTime = datetime.datetime.now()
+    restartTomcats(tomcatDict, testUrl, tomcatUrlDict, tomcatTimeout, titalTimeout)
+    myLogger.info('\n\n\n\n')
+    myLogger.info(30 * '*******')
+    myLogger.info('此次结束')
+    '''
     while True:
-        myLogger = Logger(logger="main").getlog()
         currentTime = datetime.datetime.now()
         restartTomcats(tomcatDict, testUrl,tomcatUrlDict,tomcatTimeout,titalTimeout)
         myLogger.info('\n\n\n\n')
         myLogger.info(30*'*******')
         myLogger.info('此次结束')
         time.sleep(1200)
+    '''
