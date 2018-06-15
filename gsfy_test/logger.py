@@ -20,7 +20,6 @@ class Logger(object):
             os.makedirs(log_path)
         log_name = log_path + rq + '.log'
         if not os.path.exists(log_name):
-            # os.system(r'touch %s' % log_name)
             os.system(r'type nul>%s' % log_name)
         fh = logging.FileHandler(log_name)
         fh.setLevel(logging.INFO)

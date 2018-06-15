@@ -14,7 +14,7 @@ def encrypyDecByTwo(func):
     def wrapper(*args,**kwargs):
         print(args)
         enStr = aes_tool.encrypy(args[2]).decode('utf-8')
-        args = (args[0],args[1],enStr,)
+        args = (args[0],args[1],enStr,args[3])
         return func(*args,**kwargs)
     return wrapper
 
