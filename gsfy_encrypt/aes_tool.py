@@ -2,6 +2,7 @@
 from Crypto.Cipher import AES
 import base64
 from binascii import b2a_hex, a2b_hex
+import sys
 
 class aes_tool(object):
     # def __init__(self,aKey='36AAF0685AEF14641F1F54CC853B6323',aIv='5AEF14641F1F54CC'):
@@ -41,16 +42,21 @@ class aes_tool(object):
 # aClientType=0\x00\x00\x00\x00\x00\x00
 if __name__ == '__main__':
     '''加密'''
-    # endUrl = '/app/phpatientarticle/appuseagreement?aArticleCategoryId=47DE670DABEA41838356283C6E212435'
-    endUrl = '/app/member/phappointment/system/expertlist?aptSystemDictId=2010'
-    # endUrl = '/app/phpatientmain/login?aUserName=15890616592&aPassword=E10ADC3949BA59ABBE56E057F20F883E&aVersionNo=1.2.3805&aClientType=0'
-    enStr = aes_tool.encrypy(endUrl)
+    deptUrl = '/app/member/appointment/apt_dept_scheduler.html?deptCode=2055&auplatform=wechat'
+    enStr = aes_tool.encrypy(deptUrl)
     print(enStr)
     '''解密'''
-    deStr = aes_tool.decrypt(enStr).decode('utf-8')
+    deStr = aes_tool.decrypt('H8P3JKfE0xZQ6AMhL/RyobiR8Itm5cBkzLet4qiL/liJ+p7x6UkkhiZLJ8ErCx+xqTRBJqE/k1pgqWply/A7QGxp/g7FWiHemAqZkrJMMEKQktQ2hSsbsU1eTnDz/Vsa')
     print(deStr)
 
+    f = open(r'dept_code.txt')
+    lines = f.readlines()
+    for line in lines:
+        # print(line.strip())
+        tmpDeptUrl =  '/app/member/appointment/apt_dept_scheduler.html?deptCode='+ line.strip()+ '&auplatform=wechat'
+        # print(tmpDeptUrl)
+        tmpEnStr = 'http://app.gsfybjy.com/phpatient/app/appservice?querystr='+ aes_tool.encrypy(tmpDeptUrl).decode('utf-8')
+        print("%s  %s" %(line.strip(),tmpEnStr))
 
-# app/phpatientarticle/appuseagreement?aArticleCategoryId=47DE670DABEA41838356283C6E212435
 
 
